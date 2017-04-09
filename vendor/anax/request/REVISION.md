@@ -1,6 +1,20 @@
 Revision history
 =================================
 
+v1.0.4 (2017-04-03)
+---------------------------------
+
+* Decode incoming url to fix encoded %-characters.
+
+
+v1.0.3 (2017-03-30)
+---------------------------------
+
+* Clean up docblocks.
+* Merged fix for nginx SERVER_NAME versus HTTP_HOST, #1.
+* Adding Sensiolabs badge.
+
+
 v1.0.2 (2017-03-13)
 ---------------------------------
 

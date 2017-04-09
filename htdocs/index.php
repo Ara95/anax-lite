@@ -13,6 +13,8 @@ require ANAX_INSTALL_PATH . "/config/error_reporting.php";
 // Get the autoloader by using composers version.
 require ANAX_INSTALL_PATH . "/vendor/autoload.php";
 
+
+
 // Add all resources to $app
 $app = new \Ara\App\App();
 $app->response = new \Anax\Response\Response();
@@ -20,10 +22,17 @@ $app->request = new \Anax\Request\Request();
 $app->url     = new \Anax\Url\Url();
 $app->router  = new \Anax\Route\RouterInjectable();
 $app->view    = new \Anax\View\ViewContainer();
-
+$app->session  = new \Ara\Session\Session();
+$app->calendar = new \Ara\Calendar\Calendar();
 
 $app->view->setApp($app);
 $app->view->configure("view.php");
+
+
+$app->navbar = new \Ara\Navbar\Navbar();
+$app->navbar->configure("navbar.php");
+$app->navbar->setApp($app);
+
 
 // Init the object of the request class.
 $app->request->init();
@@ -36,20 +45,13 @@ $app->url->setStaticSiteUrl($app->request->getSiteUrl());
 $app->url->setStaticBaseUrl($app->request->getBaseUrl());
 $app->url->setScriptName($app->request->getScriptName());
 
+
+
 // Update url configuration with values from config file.
 $app->url->configure("url.php");
 $app->url->setDefaultsFromConfiguration();
 
-
-// // Create some urls.
-// $aUrl = $app->url->create("");
-// echo "<p><a href='$aUrl'>The index url, home</a> ($aUrl)";
-//
-// $aUrl = $app->url->create("some/route");
-// echo "<p><a href='$aUrl'>Url to some/route</a> ($aUrl)";
-//
-// $aUrl = $app->url->create("some/where/some/route");
-// echo "<p><a href='$aUrl'>Another url to some/where/some/route</a> ($aUrl)";
+$app->style = $app->url->asset("css/style.css");
 
 // Load the routes
 require ANAX_INSTALL_PATH . "/config/route.php";

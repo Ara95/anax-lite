@@ -27,11 +27,11 @@ class ComposerStaticInit072947be169d8d9eb9219902fc347c8b
         ),
         'Anax\\' => 
         array (
-            0 => __DIR__ . '/..' . '/anax/request/src',
-            1 => __DIR__ . '/..' . '/anax/common/src',
-            2 => __DIR__ . '/..' . '/anax/url/src',
-            3 => __DIR__ . '/..' . '/anax/router/src',
-            4 => __DIR__ . '/..' . '/anax/response/src',
+            0 => __DIR__ . '/..' . '/anax/common/src',
+            1 => __DIR__ . '/..' . '/anax/router/src',
+            2 => __DIR__ . '/..' . '/anax/response/src',
+            3 => __DIR__ . '/..' . '/anax/request/src',
+            4 => __DIR__ . '/..' . '/anax/url/src',
             5 => __DIR__ . '/..' . '/anax/view/src',
         ),
     );
