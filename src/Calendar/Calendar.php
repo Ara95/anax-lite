@@ -22,7 +22,7 @@ class Calendar
     {
         $this->currDay = date('d');
         if ($this->year . "-" . $this->month != date("Y") . "-" . date("m") && $this->year . "-0" . $this->month != date("Y") . "-" . date("m")) {
-            $this->currDay = 2017;
+            $this->currentDay = 2017;
         }
 
 
@@ -98,7 +98,7 @@ class Calendar
         }
 
         for ($i = 1; $i <= $index; $i++) {
-            echo "<div class='calendar-empty'>$prevday</div>";
+            echo "<div class='daypassed'>$prevday</div>";
             $prevday++;
         }
 
@@ -109,8 +109,7 @@ class Calendar
 
             if (date('l', strtotime(date(''.$this->year.'-'.$this->month.'-' . strval($i)))) == "Sunday" && $i != $this->currDay) {
                 echo "<div class='calday' style='color:red; border: solid 1px red;'>";
-            } // else create normal div
-            elseif ($i != $this->currDay) {
+            } elseif ($i != $this->currDay) {
                 echo "<div class='calday'>";
             }
              echo "$i</div>";

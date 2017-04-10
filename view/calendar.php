@@ -9,21 +9,20 @@ if ($app->session->has("calendar")) {
     $show = $app->session->get("calendar");
 }
 
-if (isset($_POST['previous'])) {
+if (isset($_GET['previous'])) {
     $show->previousMonth();
-    header("Location: $redirect");
-    exit;
+    header("Location:" . $redirect);
 }
 
-if (isset($_POST['next'])) {
+if (isset($_GET['next'])) {
     $show->nextMonth();
-    header("Location: $redirect");
-    exit;
+    header("Location:" . $redirect);
 }
 
 
 $show->Calendar();
-echo "<form name='input' method='post'>";
+
+echo "<form name='input' method='GET'>";
 echo "<input type='submit' class='prev' name='previous' value='< Previous'>";
 echo "<input type='submit' class='next' name='next' value='Next >'>";
 echo "</form>";
