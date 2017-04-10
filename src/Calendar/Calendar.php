@@ -22,7 +22,7 @@ class Calendar
     {
         $this->currDay = date('d');
         if ($this->year . "-" . $this->month != date("Y") . "-" . date("m") && $this->year . "-0" . $this->month != date("Y") . "-" . date("m")) {
-            $this->currDay = 2017;
+            $this->currentDay = 2017;
         }
 
 
