@@ -31,8 +31,12 @@ $app->view->configure("view.php");
 
 $app->navbar = new \Ara\Navbar\Navbar();
 $app->navbar->configure("navbar.php");
-$app->navbar->setApp($app);
 
+$app->db = new \Anax\Database\DatabaseConfigure();
+$app->db->configure("database.php");
+$app->db->setDefaultsFromConfiguration();
+
+$app->navbar->setApp($app);
 
 // Init the object of the request class.
 $app->request->init();

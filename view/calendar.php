@@ -19,10 +19,10 @@ if (isset($_GET['next'])) {
     header("Location:" . $redirect);
 }
 
-
 $show->Calendar();
+?>
 
-echo "<form name='input' method='GET'>";
-echo "<input type='submit' class='prev' name='previous' value='< Previous'>";
-echo "<input type='submit' class='next' name='next' value='Next >'>";
-echo "</form>";
+<form name='input' method='GET'>;
+<input type='submit' class='prev' name='previous' value='< Previous'>;
+<input type='submit' class='next' name='next' value='Next >'>;
+</form>;
