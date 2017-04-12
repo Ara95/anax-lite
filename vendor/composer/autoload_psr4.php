@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Ara\\' => array($baseDir . '/src'),
-    'Anax\\' => array($vendorDir . '/anax/common/src', $vendorDir . '/anax/router/src', $vendorDir . '/anax/response/src', $vendorDir . '/anax/request/src', $vendorDir . '/anax/url/src', $vendorDir . '/anax/view/src'),
+    'Anax\\' => array($vendorDir . '/anax/common/src', $vendorDir . '/anax/router/src', $vendorDir . '/anax/response/src', $vendorDir . '/anax/request/src', $vendorDir . '/anax/url/src', $vendorDir . '/anax/view/src', $vendorDir . '/anax/database/src'),
 );

@@ -9,5 +9,7 @@ return [
 
     "Session" => "session",
 
-    "Calendar" => "calendar"
+    "Calendar" => "calendar",
+
+    "Login" => "login"
 ];

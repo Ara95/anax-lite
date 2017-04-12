@@ -14,9 +14,14 @@ $app->router->add("", function () use ($app) {
 
 
 $app->router->add("about", function () use ($app) {
+
+    // $app->db->connect();
+    //
+    // $user = $app->db->executeFetchAll("SELECT * FROM users WHERE username='ara'")[0];
+
     $app->view->add("take1/header", ["title" => "About"]);
     $app->view->add("navbar1/navbar");
-    $app->view->add("take1/about");
+    $app->view->add("take1/about", ["username" => $user]);
     $app->view->add("take1/footer");
     $app->response->setBody([$app->view, "render"])
                   ->send();
@@ -45,16 +50,22 @@ $app->router->add("report", function () use ($app) {
 
 
 $app->router->add("calendar", function () use ($app) {
-    $app->view->add("take1/header", ["title" => "Session"]);
+    $app->view->add("take1/header", ["title" => "Calendar"]);
     $app->view->add("navbar1/navbar");
-    $app->view->add("calendar", [
-     "redirect" => $app->url->create("calendar")
-    ]);
+    $app->view->add("calendar", ["redirect" => $app->url->create("calendar")]);
     $app->view->add("take1/footer");
     $app->response->setBody([$app->view, "render"])
                   ->send();
 });
 
+$app->router->add("login", function () use ($app) {
+    $app->view->add("take1/header", ["title" => "Login"]);
+    $app->view->add("navbar1/navbar");
+    $app->view->add("take1/login");
+    $app->view->add("take1/footer");
+    $app->response->setBody([$app->view, "render"])
+                  ->send();
+});
 
 $app->router->add("status", function () use ($app) {
     $data = [
