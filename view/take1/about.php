@@ -4,7 +4,6 @@
 
 <h1 class="header">About</h1>
 
-<?= $user->username ?>
 
 <p class="metext">Denna sida representerar min gång i OOPHP-kursen där vi främst kommer hålla på med Ojektorienterad PHP-programmering.</p>
 

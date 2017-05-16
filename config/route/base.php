@@ -10,24 +10,15 @@ $app->router->add("", function () use ($app) {
     $app->response->setBody([$app->view, "render"])
                   ->send();
 });
-
-
-
 $app->router->add("about", function () use ($app) {
-
-    // $app->db->connect();
-    //
-    // $user = $app->db->executeFetchAll("SELECT * FROM users WHERE username='ara'")[0];
 
     $app->view->add("take1/header", ["title" => "About"]);
     $app->view->add("navbar1/navbar");
-    $app->view->add("take1/about", ["username" => $user]);
+    $app->view->add("take1/about");
     $app->view->add("take1/footer");
     $app->response->setBody([$app->view, "render"])
                   ->send();
 });
-
-
 $app->router->add("session", function () use ($app) {
     $app->view->add("take1/header", ["title" => "Session"]);
     $app->view->add("navbar1/navbar");
@@ -36,9 +27,6 @@ $app->router->add("session", function () use ($app) {
     $app->response->setBody([$app->view, "render"])
                   ->send();
 });
-
-
-
 $app->router->add("report", function () use ($app) {
     $app->view->add("take1/header", ["title" => "Report"]);
     $app->view->add("navbar1/navbar");
@@ -47,8 +35,6 @@ $app->router->add("report", function () use ($app) {
     $app->response->setBody([$app->view, "render"])
                   ->send();
 });
-
-
 $app->router->add("calendar", function () use ($app) {
     $app->view->add("take1/header", ["title" => "Calendar"]);
     $app->view->add("navbar1/navbar");
@@ -57,16 +43,14 @@ $app->router->add("calendar", function () use ($app) {
     $app->response->setBody([$app->view, "render"])
                   ->send();
 });
-
-$app->router->add("login", function () use ($app) {
-    $app->view->add("take1/header", ["title" => "Login"]);
-    $app->view->add("navbar1/navbar");
-    $app->view->add("take1/login");
-    $app->view->add("take1/footer");
-    $app->response->setBody([$app->view, "render"])
-                  ->send();
-});
-
+// $app->router->add("login", function () use ($app) {
+//     $app->view->add("take1/header", ["title" => "Login"]);
+//     $app->view->add("navbar1/navbar");
+//     $app->view->add("login");
+//     $app->view->add("take1/footer");
+//     $app->response->setBody([$app->view, "render"])
+//                   ->send();
+// });
 $app->router->add("status", function () use ($app) {
     $data = [
         "Server" => php_uname(),
@@ -75,13 +59,8 @@ $app->router->add("status", function () use ($app) {
         "Memory used" => memory_get_peak_usage(true),
         "Execution time" => microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'],
     ];
-
     $app->response->sendJson($data);
 });
-
-
-
-
 $callback = function ($value) use ($app) {
     $data = [
         "route"     => $app->request->getRoute(),
@@ -90,9 +69,6 @@ $callback = function ($value) use ($app) {
     ];
     $app->response->sendJson($data);
 };
-
-
-
 $app->router->add("validate/{value:digit}", $callback);
 $app->router->add("validate/{value:hex}", $callback);
 $app->router->add("validate/{value:alpha}", $callback);

@@ -1,5 +1,5 @@
 <?php
-namespace Anax\Database;
+namespace Ara\Database;
 /**
  * Database wrapper, provides a database API on top of PHP PDO for
  * enhancing the API and dealing with error reporting and tracking.
@@ -12,8 +12,8 @@ class Database
      * @var PDOStatement $stmt    the latest PDOStatement used
      */
     private $options;
-    private $pdo = null;
-    private $stmt = null;
+    public $pdo = null;
+    public $stmt = null;
     /**
      * Constructor creating a PDO object connecting to a choosen database.
      *

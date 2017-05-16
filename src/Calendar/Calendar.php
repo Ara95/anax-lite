@@ -23,7 +23,7 @@ class Calendar
         $this->currDay = date('d');
         if ($this->year . "-" . $this->month != date("Y") . "-" . date("m") && $this->year . "-0" . $this->month != date("Y") . "-" . date("m")) {
             $this->currentDay = 2017;
-        }
+    }
 
 
         $nameofmonth = date("F", mktime(0, 0, 0, $this->month, 1, $this->year));

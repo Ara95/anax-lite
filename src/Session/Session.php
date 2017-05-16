@@ -1,6 +1,5 @@
 <?php
 namespace Ara\Session;
-
 class Session implements \Anax\Common\ConfigureInterface
 {
     use \Anax\Common\ConfigureTrait;

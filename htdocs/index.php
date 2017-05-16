@@ -14,29 +14,39 @@ require ANAX_INSTALL_PATH . "/config/error_reporting.php";
 require ANAX_INSTALL_PATH . "/vendor/autoload.php";
 
 
-
-// Add all resources to $app
 $app = new \Ara\App\App();
+$app->request  = new \Anax\Request\Request();
 $app->response = new \Anax\Response\Response();
-$app->request = new \Anax\Request\Request();
-$app->url     = new \Anax\Url\Url();
-$app->router  = new \Anax\Route\RouterInjectable();
-$app->view    = new \Anax\View\ViewContainer();
+$app->url      = new \Anax\Url\Url();
+$app->router   = new \Anax\Route\RouterInjectable();
+$app->view     = new \Anax\View\ViewContainer();
 $app->session  = new \Ara\Session\Session();
+$app->navbar = new \Ara\Navbar\Navbar();
 $app->calendar = new \Ara\Calendar\Calendar();
+$app->connect = new \Ara\Connect\Connect();
+$app->admin = new \Ara\Connect\Admin();
+$app->content = new \Ara\Connect\Content();
+$app->page = new \Ara\Connect\Page();
+$app->blog = new \Ara\Connect\Blog();
+$app->block = new \Ara\Connect\Block();
+$app->textfilter = new \Ara\Textfilter\Textfilter();
+$app->webshop = new \Ara\Connect\Webshop();
 
 $app->view->setApp($app);
-$app->view->configure("view.php");
-
-
-$app->navbar = new \Ara\Navbar\Navbar();
-$app->navbar->configure("navbar.php");
-
-$app->db = new \Anax\Database\DatabaseConfigure();
-$app->db->configure("database.php");
-$app->db->setDefaultsFromConfiguration();
-
 $app->navbar->setApp($app);
+$app->admin->setApp($app);
+$app->content->setApp($app);
+$app->page->setApp($app);
+$app->blog->setApp($app);
+$app->webshop->setApp($app);
+
+
+$app->view->configure("view.php");
+$app->navbar->configure("navbar.php");
+// $app->db->setDefaultsFromConfiguration();
+// $app->db->connect();
+
+
 
 // Init the object of the request class.
 $app->request->init();

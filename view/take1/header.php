@@ -7,8 +7,5 @@
 <title><?= $title ?></title>
 
 <body class="main">
-
-<!-- <header class="site-header">
-    <span class="site-title">Ara Nourbakhsh</span>
-</header> -->
+    
 <img class="codingimage" src="img/coding.jpg">

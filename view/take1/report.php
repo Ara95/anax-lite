@@ -5,7 +5,16 @@
 <h1 class="header">Reports</h1>
 
 <h2 class="header">Kmom01</h2>
-<p class="metext">Här skrivs det..</p>
+<h1 class="header">Hur känns det att hoppa rakt in i klasser med PHP, gick det bra?<h1>
+<p class="metext">Det kändes lite ovant då det var ett tag sedan vi höll på med PHP men eftersom vi jobbat med klasser innan denna kurs så var strukturen av en klass inte lika krånglig att lära in. Olika ser det ut men det är en sak som kommer sätta sig efter ett par veckor förhoppningsvis. Sedan så var det lite krånligt med hur jag skulle lagra data mellan omladdningar av sidan, men jag löste det till slut. Så det var mitt största problem i just detta kursmoment.</p>
+
+<h1 class="header">Berätta om dina reflektioner kring ramverk, anax-lite och din me-sida?<h1>
+<p class="metext">Eftersom vi jobbat med ramverk i tidigare kurs så var det inte helt nytt. Visste på ett ungefär hur det skulle vara uppdelat så på den fronten var det inte nytt. Men att hantera det i PHP är definitivt nytt då det finns mycket som vi ska utveckla själva och strukturera annorlunda eftersom det innehåller objektorienterad PHP. Mycket att gå igenom och lära in i början då det blev lite krångligt och ovant men det kom man in i sakta men säkert under veckan och till slut så fick man ihop sin me-sida med navbar.</p>
+
+<h1 class="header">Gick det bra att komma igång med MySQL, har du liknande erfarenheter sedan tidigare?<h1>
+<p class="metext">Då vi jobbar lite smått med MySQL innan på gymnasiet så var första delen inte så jättenytt. Samt att vi jobbat lite med databaser i föregående kursers så vet man på ett ungefär hur det ska se ut men kanske inte exakt likadant. Så jag skulle säga ja att jag har erfarenhet till en grundnivå men inte utöver det.</p>
+
+<a href="http://www.student.bth.se/~arno16/dbwebb-kurser/oophp/me/kmom01/guess/">GUESS THE NUMBER</a>
 
 
 <h2 class="header">Kmom02</h2>
