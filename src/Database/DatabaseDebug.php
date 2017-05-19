@@ -1,9 +1,6 @@
 <?php
 namespace Ara\Database;
-/**
- * Database wrapper, provides a database API on top of PHP PDO for
- * enhancing the API and dealing with error reporting and tracking.
- */
+
 class DatabaseDebug extends Database
 {
     /**

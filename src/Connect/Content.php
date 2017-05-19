@@ -3,7 +3,9 @@
  * Content
  */
 namespace Ara\Connect;
+
 use \PDO;
+
 class Content extends Connect implements \Anax\Common\AppInjectableInterface, \Anax\Common\ConfigureInterface
 {
     use \Anax\Common\ConfigureTrait,

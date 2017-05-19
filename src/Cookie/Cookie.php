@@ -1,5 +1,6 @@
 <?php
 namespace Ara\Cookie;
+
 class Cookie
 {
     private $expire;

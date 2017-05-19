@@ -1,5 +1,6 @@
 <?php
 namespace Ara\Textfilter;
+
 /**
  * Exception class for Textfilter.
  */

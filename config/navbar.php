@@ -38,10 +38,10 @@ return [
             "text" => "Blog",
             "route" => "blog",
         ],
-        "Webshop" => [
-            "text" => "Webshop",
-            "route" => "webshop",
-        ],
+        // "Webshop" => [
+        //     "text" => "Webshop",
+        //     "route" => "webshop",
+        // ],
         "login" => [
             "text" => "Login",
             "route" => "login",
@@ -89,11 +89,11 @@ return [
             "route" => "admin/search",
         ],
         "add" => [
-            "text" => "Add",
+            "text" => "Add user",
             "route" => "admin/add",
         ],
         "create" => [
-            "text" => "Create",
+            "text" => "Create content",
             "route" => "admin/create",
         ],
         "overview" => [
@@ -116,5 +116,5 @@ return [
             "route" => "webshop/stock",
         ],
       ]
-      ]
+        ]
 ];

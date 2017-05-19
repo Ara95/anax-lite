@@ -3,19 +3,27 @@
 USE test;
 SET NAMES utf8;
 
-DROP TABLE IF EXISTS `Prod2Cat`;
+DROP TABLE IF EXISTS `ProductCat`;
 DROP TABLE IF EXISTS `Image`;
-DROP TABLE IF EXISTS `ProdCategory`;
+DROP TABLE IF EXISTS `ProductCategory`;
 DROP TABLE IF EXISTS `Inventory`;
-DROP TABLE IF EXISTS `LowStock`;
-DROP TABLE IF EXISTS `InvenShelf`;
+DROP TABLE IF EXISTS `Stocklow`;
+DROP TABLE IF EXISTS `Shelfstorage`;
 DROP TABLE IF EXISTS `OrderRow`;
 DROP TABLE IF EXISTS `Cst_Order`;
-DROP TABLE IF EXISTS `ShoppingCart`;
+DROP TABLE IF EXISTS `Shopcart`;
 DROP TABLE IF EXISTS `Product`;
 DROP TABLE IF EXISTS `Customer`;
 
 
+
+
+CREATE TABLE `ProductCategory` (
+	`id` INT AUTO_INCREMENT,
+	`category` CHAR(10),
+
+	PRIMARY KEY (`id`)
+);
 
 CREATE TABLE `Image` (
 	`id` INT AUTO_INCREMENT,
@@ -24,12 +32,17 @@ CREATE TABLE `Image` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `ProdCategory` (
-	`id` INT AUTO_INCREMENT,
-	`category` CHAR(10),
 
-	PRIMARY KEY (`id`)
+CREATE TABLE `ProductCat` (
+	`id` INT AUTO_INCREMENT,
+	`prod_id` INT,
+	`cat_id` INT,
+
+	PRIMARY KEY (`id`),
+	FOREIGN KEY (`prod_id`) REFERENCES `Product` (`id`),
+    FOREIGN KEY (`cat_id`) REFERENCES `ProductCategory` (`id`)
 );
+
 
 CREATE TABLE `Product` (
 	`id` INT AUTO_INCREMENT,
@@ -39,20 +52,16 @@ CREATE TABLE `Product` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Prod2Cat` (
-	`id` INT AUTO_INCREMENT,
-	`prod_id` INT,
-	`cat_id` INT,
 
-	PRIMARY KEY (`id`),
-	FOREIGN KEY (`prod_id`) REFERENCES `Product` (`id`),
-    FOREIGN KEY (`cat_id`) REFERENCES `ProdCategory` (`id`)
+CREATE TABLE `Shelfstorage` (
+    `shelf` CHAR(6),
+    `description` VARCHAR(40),
+
+	PRIMARY KEY (`shelf`)
 );
 
 
-
-
-CREATE TABLE `LowStock` (
+CREATE TABLE `Stocklow` (
     `id` INT AUTO_INCREMENT,
     `prod_id` INT,
     `amount` INT,
@@ -62,12 +71,6 @@ CREATE TABLE `LowStock` (
 	FOREIGN KEY (`prod_id`) REFERENCES `Product` (`id`)
 );
 
-CREATE TABLE `InvenShelf` (
-    `shelf` CHAR(6),
-    `description` VARCHAR(40),
-
-	PRIMARY KEY (`shelf`)
-);
 CREATE TABLE `Inventory` (
 	`id` INT AUTO_INCREMENT,
     `prod_id` INT,
@@ -76,7 +79,7 @@ CREATE TABLE `Inventory` (
 
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`prod_id`) REFERENCES `Product` (`id`),
-    FOREIGN KEY (`shelf_id`) REFERENCES `InvenShelf` (`shelf`)
+    FOREIGN KEY (`shelf_id`) REFERENCES `Shelfstorage` (`shelf`)
 );
 
 
@@ -91,7 +94,7 @@ CREATE TABLE `Customer` (
 
 
 
-CREATE TABLE `ShoppingCart` (
+CREATE TABLE `Shopcart` (
 	`id` INT AUTO_INCREMENT,
     `customer_id` INT,
     `prod_id` INT,
@@ -139,7 +142,7 @@ CREATE PROCEDURE removeCategory(
     P_id INT
 )
 BEGIN
-    DELETE FROM Prod2Cat WHERE prod_id = P_id;
+    DELETE FROM ProductCat WHERE prod_id = P_id;
 END
 //
 DELIMITER ;
@@ -156,7 +159,7 @@ CREATE PROCEDURE addCategory(
     C_id INT
 )
 BEGIN
-    INSERT INTO `Prod2Cat` (`prod_id`, `cat_id`) VALUES (P_id, C_id);
+    INSERT INTO `ProductCat` (`prod_id`, `cat_id`) VALUES (P_id, C_id);
 END
 //
 DELIMITER ;
@@ -214,8 +217,8 @@ CREATE PROCEDURE removeProduct(
 )
 BEGIN
 	SET FOREIGN_KEY_CHECKS=0; -- to disable them
-	DELETE FROM LowStock WHERE prod_id = P_id;
-	DELETE FROM Prod2Cat WHERE prod_id = P_id;
+	DELETE FROM Stocklow WHERE prod_id = P_id;
+	DELETE FROM ProductCat WHERE prod_id = P_id;
     DELETE FROM Product WHERE id = P_id;
     SET FOREIGN_KEY_CHECKS=1; -- to re-enable them
 END
@@ -299,7 +302,7 @@ BEGIN
         ROLLBACK;
         SELECT "Sorry! That product is currently not in stock.";
     ELSE
-        INSERT INTO `ShoppingCart` (`customer_id`, `prod_id`) VALUES (customerId, prodId);
+        INSERT INTO `Shopcart` (`customer_id`, `prod_id`) VALUES (customerId, prodId);
         END IF;
 END
 //
@@ -316,13 +319,13 @@ CREATE PROCEDURE removeCart(
      prodId int
 )
 BEGIN
-    DELETE FROM `ShoppingCart` WHERE customer_id = customerId AND prod_id = prodId limit 1;
+    DELETE FROM `Shopcart` WHERE customer_id = customerId AND prod_id = prodId limit 1;
 END
 //
 DELIMITER ;
 
 
--- PROCEDURE for creating an order based on the ShoppingCart
+-- PROCEDURE for creating an order based on the Shopcart
 
 DROP PROCEDURE IF EXISTS createOrder;
 DELIMITER //
@@ -341,10 +344,10 @@ BEGIN
 
     -- Create orderrows for the order
 	INSERT INTO OrderRow (`order`, `product`, `amount`)
-	SELECT latestId, prod_id, Amount FROM `VShoppingCart` WHERE Customer_ID = customerId;
+	SELECT latestId, prod_id, Amount FROM `VShopcart` WHERE Customer_ID = customerId;
 
-    -- Delete the ShoppingCart after ordermade
-	DELETE FROM `ShoppingCart` WHERE Customer_ID = customerId;
+    -- Delete the Shopcart after ordermade
+	DELETE FROM `Shopcart` WHERE Customer_ID = customerId;
 
 
 END
@@ -399,7 +402,7 @@ DELIMITER //
 CREATE TRIGGER checkInventory
 AFTER UPDATE ON Inventory FOR EACH ROW
 	IF (NEW.amount < 5) THEN
-		INSERT INTO LowStock (`prod_id`, `amount`) VALUES (OLD.prod_id, NEW.amount);
+		INSERT INTO Stocklow (`prod_id`, `amount`) VALUES (OLD.prod_id, NEW.amount);
 	END IF;
 //
 DELIMITER ;
@@ -455,10 +458,10 @@ DELIMITER ;
 -- create
 --
 
-INSERT INTO `ProdCategory` (`category`) VALUES
+INSERT INTO `ProductCategory` (`category`) VALUES
 ("music"), ("clothes"), ("book");
 
-INSERT INTO `InvenShelf` (`shelf`, `description`) VALUES
+INSERT INTO `Shelfstorage` (`shelf`, `description`) VALUES
 ("NONE", "Currently not in stock"),
 ("A101", "House A, shelf 101"),
 ("A102", "House A, shelf 102");
@@ -474,7 +477,7 @@ INSERT INTO `Product` (`description`, `imgLink`, `price`) VALUES
 ("CD book", "img/webshop/cd.png", 30),
 ("Rockband Merchandise T-shirt", "img/webshop/tshirt.png", 70);
 
-INSERT INTO `Prod2Cat` (`prod_id`, `cat_id`) VALUES
+INSERT INTO `ProductCat` (`prod_id`, `cat_id`) VALUES
 (1, 1), (1, 2),
 (2, 1), (2, 3),
 (3, 2), (3, 3),
@@ -500,9 +503,9 @@ StockStatus(INV.amount) AS InStock,
 P.imgLink as image,
 P.price as price
 
-FROM (((Prod2Cat AS P2C
+FROM (((ProductCat AS P2C
 INNER JOIN Product AS P ON P2C.prod_id = P.id)
-INNER JOIN ProdCategory AS PC ON P2C.cat_id = PC.id)
+INNER JOIN ProductCategory AS PC ON P2C.cat_id = PC.id)
 INNER JOIN Inventory AS INV ON INV.prod_id = P.id)
 GROUP BY P.id ORDER BY P.id;
 
@@ -519,7 +522,7 @@ S.description AS location,
 I.amount
 
 FROM Inventory AS I
-INNER JOIN InvenShelf AS S ON I.shelf_id = S.shelf
+INNER JOIN Shelfstorage AS S ON I.shelf_id = S.shelf
 ORDER BY S.shelf;
 
 SELECT * FROM VInventory;
@@ -534,14 +537,14 @@ SELECT * FROM Inventory;
 --
 -- Create view for the shopping cart
 --
-DROP VIEW IF EXISTS VShoppingCart;
-CREATE VIEW VShoppingCart AS
+DROP VIEW IF EXISTS VShopcart;
+CREATE VIEW VShopcart AS
 SELECT
 P.id AS prod_id, C.id AS Customer_ID,
 P.description as Item,
 SUM(P.Price) as Price, COUNT(*) as Amount
 
-FROM ShoppingCart AS SC
+FROM Shopcart AS SC
 INNER JOIN Customer AS C ON SC.customer_id = C.id
 INNER JOIN Product AS P ON P.id = SC.prod_id
 GROUP BY P.id

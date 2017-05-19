@@ -1,5 +1,6 @@
 <?php
 namespace Ara\Users;
+
 class Users implements \Anax\Common\AppInjectableInterface, \Anax\Common\ConfigureInterface
 {
     use \Anax\Common\AppInjectableTrait;

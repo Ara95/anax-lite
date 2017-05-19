@@ -9,7 +9,6 @@ if (!$session->has("name")) {
 $user = $session->get("name");
 
 if (isset($_POST['save'])) {
-
     $info = htmlentities($_POST['info']);
     $email = htmlentities($_POST['email']);
     $params = [$info, $email];

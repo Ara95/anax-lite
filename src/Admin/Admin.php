@@ -1,5 +1,6 @@
 <?php
 namespace Ara\Admin;
+
 class Admin implements \Anax\Common\AppInjectableInterface, \Anax\Common\ConfigureInterface
 {
     use \Anax\Common\AppInjectableTrait;

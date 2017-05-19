@@ -3,7 +3,9 @@
  * Admin
  */
 namespace Ara\Connect;
+
 use \PDO;
+
 class Admin extends Connect implements \Anax\Common\AppInjectableInterface, \Anax\Common\ConfigureInterface
 {
     use \Anax\Common\ConfigureTrait,

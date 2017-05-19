@@ -1,8 +1,6 @@
 <?php
 namespace Ara\Database;
-/**
- * Namespaced exception.
- */
+
 class DatabaseConfigure extends Database implements \Anax\Common\ConfigureInterface
 {
     use \Anax\Common\ConfigureTrait;

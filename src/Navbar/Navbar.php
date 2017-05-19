@@ -1,8 +1,6 @@
 <?php
 namespace Ara\Navbar;
-/**
- * Navbar to generate HTML för a navbar from a configuration array.
- */
+
 class Navbar implements \Anax\Common\AppInjectableInterface, \Anax\Common\ConfigureInterface
 {
     use \Anax\Common\ConfigureTrait,

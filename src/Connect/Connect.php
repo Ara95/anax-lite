@@ -1,6 +1,8 @@
 <?php
 namespace Ara\Connect;
+
 use \PDO;
+
 class Connect
 {
     protected $db;

@@ -38,6 +38,16 @@ class ComposerStaticInit072947be169d8d9eb9219902fc347c8b
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'M' => 
+        array (
+            'Michelf' => 
+            array (
+                0 => __DIR__ . '/..' . '/michelf/php-markdown',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'CAsciiArt' => __DIR__ . '/..' . '/mos/cimage/CAsciiArt.php',
         'CCache' => __DIR__ . '/..' . '/mos/cimage/CCache.php',
@@ -53,6 +63,7 @@ class ComposerStaticInit072947be169d8d9eb9219902fc347c8b
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit072947be169d8d9eb9219902fc347c8b::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit072947be169d8d9eb9219902fc347c8b::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit072947be169d8d9eb9219902fc347c8b::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit072947be169d8d9eb9219902fc347c8b::$classMap;
 
         }, null, ClassLoader::class);

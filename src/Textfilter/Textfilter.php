@@ -1,7 +1,6 @@
 <?php
 namespace Ara\Textfilter;
 
-
 class Textfilter
 {
     /**
@@ -96,11 +95,11 @@ class Textfilter
      *
      * @return string as the formatted html-text.
      */
-     public function markdown($text)
-   {
-       $markdown = new \Michelf\MarkdownExtra();
-       return $markdown::defaultTransform($text);
-   }
+    public function markdown($text)
+    {
+        $markdown = new \Michelf\MarkdownExtra();
+        return $markdown::defaultTransform($text);
+    }
     /**
      * For convenience access to nl2br
      *
