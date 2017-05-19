@@ -7,7 +7,7 @@ $user_loggedin = "";
 <div class="main">
 <div style="width:50%; margin-left:auto; margin-right:auto;">
 <?php
-// Make sure no one is logged in
+
 if ($session->has("name")) {
     echo "<p>You are already logged in as " . $session->get('name') . "</p>";
     echo "<p><a href='$logoutLink'>Logout</a></p>";

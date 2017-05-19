@@ -4,9 +4,9 @@ echo "<div class='edit-container'>";
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 }
-// Check if form posted and get incoming
+
 if (isset($_POST['delete'])) {
-    // delete based on id
+
     if ($_POST['deleteTyped'] == "delete") {
         $admin->deleteUser($id);
         header("Location: $usersLink");
@@ -14,18 +14,18 @@ if (isset($_POST['delete'])) {
         echo "<p class='warning'>Please type 'delete' to delete profile</p>";
     }
 }
-// Check if form posted and get incoming
+
 if (isset($_POST['save'])) {
-    // Store posted form in parameter array
+
     $info = htmlentities($_POST['info']);
     $email = htmlentities($_POST['email']);
     $authority = htmlentities($_POST['authority']);
     $params = [$info, $email, $authority];
-    // send params to admin class to update current stats
+
     $admin->editUser($params, $id);
     echo "<p class='success'>You updated the details!</p>";
 }
-// Check if form posted and get incoming
+
 if (isset($_POST['changePass'])) {
     $new_pass = isset($_POST["new_pass"]) ? htmlentities($_POST["new_pass"]) : null;
     if (empty($new_pass)) {
@@ -36,7 +36,7 @@ if (isset($_POST['changePass'])) {
         echo "<p class='success'>Password changed to $new_pass</p>";
     }
 }
-// Set table and form for user
+
 $admin->setUser($id);
 ?>
 </div></div></div>

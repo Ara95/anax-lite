@@ -7,7 +7,7 @@ if (!$resultset) {
 ?>
 <center><h1> More News (block) (won't work without path) </h1></center>
 <div class="flex-container">
-<!-- // idén är att en flex-container med widget av typen "block" är på längst ner på huvudsidan. -->
+
     <?php $id = -1; foreach ($resultset as $row) :
         $id++;
         $posted = "False";

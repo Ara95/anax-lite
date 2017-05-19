@@ -2,8 +2,7 @@
 $content = $app->content;
 $page = $app->page;
 $textfilter = $app->textfilter;
-// Try matching content for type page and its path
-// Get number of hits per page
+
 $path = getGet("path");
 $pageRes = $page->getPage($path);
 if (!$pageRes) {

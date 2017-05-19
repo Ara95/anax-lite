@@ -21,8 +21,8 @@ class Block extends Connect implements \Anax\Common\AppInjectableInterface, \Ana
 SELECT
 *,
 CASE
-WHEN (deleted <= NOW()) THEN "isDeleted"
-WHEN (published <= NOW()) THEN "isPublished"
+WHEN (deleted <= NOW()) THEN "Deleted"
+WHEN (published <= NOW()) THEN "Published"
 ELSE "notPublished"
 END AS status
 FROM content

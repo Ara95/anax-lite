@@ -1,5 +1,5 @@
 <?php
-// Text that will be tested
+
 $textOrig = "[b]Bold text[/b] [i]Italic text[/i] [url=http://dbwebb.se]a link to dbwebb[/url]";
 $textOrig2 = "http://dbwebb.se";
 $textOrig3 = "Hello this is a sentence for linebreak.
