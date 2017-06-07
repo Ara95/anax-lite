@@ -9,15 +9,14 @@ class Connect
 
     public function __construct()
     {
-        // Studentserver
         // $databaseConfig = [
-        //     "dsn"      => "mysql:host=localhost;dbname=test;",
-        //     "login"    => "user",
-        //     "password" => "pass",
+        //     "dsn"      => "mysql:host=localhost;dbname=skolan;",
+        //     "login"    => "root",
+        //     "password" => "",
         //     "options"  => [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"],
         // ];
 
-        // Studentserver
+
         $databaseConfig = [
             "dsn"      => "mysql:host=blu-ray.student.bth.se;dbname=arno16",
             "login"    => "arno16",
@@ -32,6 +31,27 @@ class Connect
             print "Error!: " . $e->getMessage() . "<br/>";
             throw new PDOException("Could not connect to database, hiding details.");
         }
+    }
+
+        /**
+     * Do INSERT/UPDATE/DELETE with optional parameters.
+     *
+     * @param string $sql   statement to execute
+     * @param array  $param to match ? in statement
+     *
+     * @return PDOStatement
+     */
+    public function execute($sql, $param = [])
+    {
+        $sth = $this->db->prepare($sql);
+        if (!$sth) {
+            $this->statementException($sth, $sql, $param);
+        }
+        $status = $sth->execute($param);
+        if (!$status) {
+            $this->statementException($sth, $sql, $param);
+        }
+        return $sth;
     }
 
     public function addUser($user, $pass, $authority)

@@ -2,23 +2,18 @@
 <?php
 $admin = $app->admin;
 if (isset($_POST['submitCreateForm'])) {
-
     $user_name = isset($_POST["new_name"]) ? htmlentities($_POST["new_name"]) : null;
     $user_pass = isset($_POST["new_pass"]) ? htmlentities($_POST["new_pass"]) : null;
     $re_user_pass = isset($_POST["re_pass"]) ? htmlentities($_POST["re_pass"]) : null;
     $authority = isset($_POST["authority"]) ? htmlentities($_POST["authority"]) : null;
-
     if (!$admin->exists($user_name)) {
-
         if ($user_pass != $re_user_pass) {
             echo "<p class='warning'>Passwords do not match!</p>";
         } else {
             if (strpos($user_name, '%') !== false) {
                 echo "<p class='warning'>% is not an acceptable character.</p>";
             } else {
-
                 $crypt_pass = password_hash($user_pass, PASSWORD_DEFAULT);
-
                 $admin->addUser($user_name, $crypt_pass, $authority);
                 echo "<p class='success'>Successfully added " . $user_name . "!</p>";
                 $admin->searchUser($user_name);

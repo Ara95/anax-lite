@@ -1,8 +1,8 @@
 <div class="main">
 <section>
 
-<h1>Admin Dashboard</h1>
-<p>This is the page for the warehouse</p>
+<h1>Admin-site</h1>
+<p>Stock page</p>
 <?= $app->navbar->getHTML(3); ?>
 </section>
 
@@ -14,7 +14,7 @@ $resLow = $app->connect->getAllRes("SELECT * FROM LowStock"); ?>
     <tr class="first">
         <th> Edit </th>
         <th> Shelf </th>
-        <th> PROD_ID </th>
+        <th> Product ID </th>
         <th> Location </th>
         <th> Amount </th>
     </tr>

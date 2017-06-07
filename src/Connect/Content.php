@@ -148,6 +148,7 @@ EOD;
               $id = htmlentities($row['id']);
               $rows .= "<tr>";
               $rows .= "<td><a href='{$this->app->url->create('admin/edit')}?id=$id'>Edit</a></td>";
+              $rows .= "<td>" . $row['id'] . "</td>";
               $rows .= "<td>" . $row['title'] . "</td>";
               $rows .= "<td>" . $row['published'] . "</td>";
               $rows .= "<td>" . $row['created'] . "</td>";
@@ -157,6 +158,7 @@ EOD;
               $rows .= "<td>" . $row['slug'] . "</td>";
               $rows .= "</tr>\n";
         }
+          $th1 = "<th>   |ID</th>";
           $th1 .= "<th>Title</th>";
           $th1 .= "<th>Published</th>";
           $th1 .= "<th>Created</th>";

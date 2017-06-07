@@ -3,10 +3,10 @@ $resLow = $app->connect->getAllRes("SELECT * FROM LowStock");
 ?>
 
 <section>
-    <h3> Low Stock Log </h3>
+    <h3>Low stock</h3>
     <table>
         <tr class="first">
-            <th> PROD_ID </th>
+            <th> Product ID </th>
             <th> Amount </th>
             <th> Occured </th>
 
@@ -15,7 +15,7 @@ $resLow = $app->connect->getAllRes("SELECT * FROM LowStock");
             <tr>
             <td> <?= $row["prod_id"] ?> </td>
             <td> <?= $row["amount"] ?> </td>
-            <td style="background:orange;"> <?= $row["occured"] ?> </td>
+            <td style="background:red;"> <?= $row["occured"] ?> </td>
             </tr>
 
     <?php endforeach; ?>

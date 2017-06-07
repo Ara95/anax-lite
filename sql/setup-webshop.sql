@@ -1,29 +1,31 @@
-
-
+-- ------------------------------------------------------------------------
+--
+-- For lecture in oophp-v3 kmom03
+--
+-- CREATE DATABASE oophp;
+-- GRANT ALL ON oophp.* TO user@localhost IDENTIFIED BY "pass";
 USE test;
 SET NAMES utf8;
-
-DROP TABLE IF EXISTS `ProductCat`;
+-- ------------------------------------------------------------------------
+--
+-- Setup tables
+--
+DROP TABLE IF EXISTS `Prod2Cat`;
 DROP TABLE IF EXISTS `Image`;
-DROP TABLE IF EXISTS `ProductCategory`;
+DROP TABLE IF EXISTS `ProdCategory`;
 DROP TABLE IF EXISTS `Inventory`;
-DROP TABLE IF EXISTS `Stocklow`;
-DROP TABLE IF EXISTS `Shelfstorage`;
+DROP TABLE IF EXISTS `LowStock`;
+DROP TABLE IF EXISTS `InvenShelf`;
 DROP TABLE IF EXISTS `OrderRow`;
 DROP TABLE IF EXISTS `Cst_Order`;
-DROP TABLE IF EXISTS `Shopcart`;
+DROP TABLE IF EXISTS `ShoppingCart`;
 DROP TABLE IF EXISTS `Product`;
 DROP TABLE IF EXISTS `Customer`;
 
-
-
-
-CREATE TABLE `ProductCategory` (
-	`id` INT AUTO_INCREMENT,
-	`category` CHAR(10),
-
-	PRIMARY KEY (`id`)
-);
+-- ------------------------------------------------------------------------
+--
+-- Product
+--
 
 CREATE TABLE `Image` (
 	`id` INT AUTO_INCREMENT,
@@ -32,17 +34,12 @@ CREATE TABLE `Image` (
 	PRIMARY KEY (`id`)
 );
 
-
-CREATE TABLE `ProductCat` (
+CREATE TABLE `ProdCategory` (
 	`id` INT AUTO_INCREMENT,
-	`prod_id` INT,
-	`cat_id` INT,
+	`category` CHAR(10),
 
-	PRIMARY KEY (`id`),
-	FOREIGN KEY (`prod_id`) REFERENCES `Product` (`id`),
-    FOREIGN KEY (`cat_id`) REFERENCES `ProductCategory` (`id`)
+	PRIMARY KEY (`id`)
 );
-
 
 CREATE TABLE `Product` (
 	`id` INT AUTO_INCREMENT,
@@ -52,16 +49,23 @@ CREATE TABLE `Product` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `Prod2Cat` (
+	`id` INT AUTO_INCREMENT,
+	`prod_id` INT,
+	`cat_id` INT,
 
-CREATE TABLE `Shelfstorage` (
-    `shelf` CHAR(6),
-    `description` VARCHAR(40),
-
-	PRIMARY KEY (`shelf`)
+	PRIMARY KEY (`id`),
+	FOREIGN KEY (`prod_id`) REFERENCES `Product` (`id`),
+    FOREIGN KEY (`cat_id`) REFERENCES `ProdCategory` (`id`)
 );
 
 
-CREATE TABLE `Stocklow` (
+-- ------------------------------------------------------------------------
+--
+-- Inventory, shelf and report
+--
+
+CREATE TABLE `LowStock` (
     `id` INT AUTO_INCREMENT,
     `prod_id` INT,
     `amount` INT,
@@ -71,6 +75,12 @@ CREATE TABLE `Stocklow` (
 	FOREIGN KEY (`prod_id`) REFERENCES `Product` (`id`)
 );
 
+CREATE TABLE `InvenShelf` (
+    `shelf` CHAR(6),
+    `description` VARCHAR(40),
+
+	PRIMARY KEY (`shelf`)
+);
 CREATE TABLE `Inventory` (
 	`id` INT AUTO_INCREMENT,
     `prod_id` INT,
@@ -79,10 +89,14 @@ CREATE TABLE `Inventory` (
 
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`prod_id`) REFERENCES `Product` (`id`),
-    FOREIGN KEY (`shelf_id`) REFERENCES `Shelfstorage` (`shelf`)
+    FOREIGN KEY (`shelf_id`) REFERENCES `InvenShelf` (`shelf`)
 );
 
 
+-- ------------------------------------------------------------------------
+--
+-- Customer
+--
 CREATE TABLE `Customer` (
 	`id` INT AUTO_INCREMENT,
     `firstName` VARCHAR(20),
@@ -93,8 +107,12 @@ CREATE TABLE `Customer` (
 
 
 
+-- ------------------------------------------------------------------------
+--
+-- Shopping Cart
+--
 
-CREATE TABLE `Shopcart` (
+CREATE TABLE `ShoppingCart` (
 	`id` INT AUTO_INCREMENT,
     `customer_id` INT,
     `prod_id` INT,
@@ -105,6 +123,10 @@ CREATE TABLE `Shopcart` (
 );
 
 
+-- ------------------------------------------------------------------------
+--
+-- Order
+--
 CREATE TABLE `Cst_Order` (
 	`id` INT AUTO_INCREMENT,
     `customer_id` INT,
@@ -126,40 +148,46 @@ CREATE TABLE `OrderRow` (
     FOREIGN KEY (`order`) REFERENCES `Cst_Order` (`id`)
 );
 
+-- -------------------------------------------------------------------------
+--
+-- Functions, triggers, etc
+--
+
+-- Trigger for creating product, insert into inventory
 DROP TRIGGER IF EXISTS createdProduct;
 
 CREATE TRIGGER createdProduct
 AFTER INSERT ON Product FOR EACH ROW
 	INSERT INTO Inventory (`prod_id`, `amount`, `shelf_id`) VALUES (NEW.id, 0, "NONE");
 
-
+-- PROCEDURE for updating product, first product then category and p2c
 
 DROP PROCEDURE IF EXISTS removeCategory;
 DELIMITER //
 
-
+-- remove all categories in product
 CREATE PROCEDURE removeCategory(
     P_id INT
 )
 BEGIN
-    DELETE FROM ProductCat WHERE prod_id = P_id;
+    DELETE FROM Prod2Cat WHERE prod_id = P_id;
 END
 //
 DELIMITER ;
 
 
-
+-- PROCEDURE for updating product, first product then category and p2c
 
 DROP PROCEDURE IF EXISTS addCategory;
 DELIMITER //
 
-
+-- adds category
 CREATE PROCEDURE addCategory(
     P_id INT,
     C_id INT
 )
 BEGIN
-    INSERT INTO `ProductCat` (`prod_id`, `cat_id`) VALUES (P_id, C_id);
+    INSERT INTO `Prod2Cat` (`prod_id`, `cat_id`) VALUES (P_id, C_id);
 END
 //
 DELIMITER ;
@@ -167,7 +195,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS createProduct;
 DELIMITER //
 
-
+-- creates product
 CREATE PROCEDURE createProduct(
     des VARCHAR(20),
     imgLink VARCHAR(40),
@@ -179,7 +207,7 @@ BEGIN
     INSERT INTO `Product` (`description`, `imgLink`, `price`) VALUES
 	(des, imgLink, price);
 
-
+    -- Get the id of product.
     SET latestId = (SELECT MAX(id) FROM Product);
 
     call addCategory(latestId, C_id);
@@ -188,7 +216,7 @@ END
 //
 DELIMITER ;
 
-
+-- PROCEDURE for updating product, first product then category and p2c
 
 DROP PROCEDURE IF EXISTS updateProduct;
 DELIMITER //
@@ -217,8 +245,8 @@ CREATE PROCEDURE removeProduct(
 )
 BEGIN
 	SET FOREIGN_KEY_CHECKS=0; -- to disable them
-	DELETE FROM Stocklow WHERE prod_id = P_id;
-	DELETE FROM ProductCat WHERE prod_id = P_id;
+	DELETE FROM LowStock WHERE prod_id = P_id;
+	DELETE FROM Prod2Cat WHERE prod_id = P_id;
     DELETE FROM Product WHERE id = P_id;
     SET FOREIGN_KEY_CHECKS=1; -- to re-enable them
 END
@@ -302,7 +330,7 @@ BEGIN
         ROLLBACK;
         SELECT "Sorry! That product is currently not in stock.";
     ELSE
-        INSERT INTO `Shopcart` (`customer_id`, `prod_id`) VALUES (customerId, prodId);
+        INSERT INTO `ShoppingCart` (`customer_id`, `prod_id`) VALUES (customerId, prodId);
         END IF;
 END
 //
@@ -319,13 +347,13 @@ CREATE PROCEDURE removeCart(
      prodId int
 )
 BEGIN
-    DELETE FROM `Shopcart` WHERE customer_id = customerId AND prod_id = prodId limit 1;
+    DELETE FROM `ShoppingCart` WHERE customer_id = customerId AND prod_id = prodId limit 1;
 END
 //
 DELIMITER ;
 
 
--- PROCEDURE for creating an order based on the Shopcart
+-- PROCEDURE for creating an order based on the ShoppingCart
 
 DROP PROCEDURE IF EXISTS createOrder;
 DELIMITER //
@@ -344,10 +372,10 @@ BEGIN
 
     -- Create orderrows for the order
 	INSERT INTO OrderRow (`order`, `product`, `amount`)
-	SELECT latestId, prod_id, Amount FROM `VShopcart` WHERE Customer_ID = customerId;
+	SELECT latestId, prod_id, Amount FROM `VShoppingCart` WHERE Customer_ID = customerId;
 
-    -- Delete the Shopcart after ordermade
-	DELETE FROM `Shopcart` WHERE Customer_ID = customerId;
+    -- Delete the ShoppingCart after ordermade
+	DELETE FROM `ShoppingCart` WHERE Customer_ID = customerId;
 
 
 END
@@ -402,7 +430,7 @@ DELIMITER //
 CREATE TRIGGER checkInventory
 AFTER UPDATE ON Inventory FOR EACH ROW
 	IF (NEW.amount < 5) THEN
-		INSERT INTO Stocklow (`prod_id`, `amount`) VALUES (OLD.prod_id, NEW.amount);
+		INSERT INTO LowStock (`prod_id`, `amount`) VALUES (OLD.prod_id, NEW.amount);
 	END IF;
 //
 DELIMITER ;
@@ -458,26 +486,26 @@ DELIMITER ;
 -- create
 --
 
-INSERT INTO `ProductCategory` (`category`) VALUES
-("music"), ("clothes"), ("book");
+INSERT INTO `ProdCategory` (`category`) VALUES
+("Ara1"), ("Ara2"), ("Ara3");
 
-INSERT INTO `Shelfstorage` (`shelf`, `description`) VALUES
+INSERT INTO `InvenShelf` (`shelf`, `description`) VALUES
 ("NONE", "Currently not in stock"),
 ("A101", "House A, shelf 101"),
 ("A102", "House A, shelf 102");
 
 INSERT INTO `Image` (`link`) VALUES
-("img/webshop/cd.png"), ("img/webshop/clothesbook.png"), ("img/webshop/musicbook.jpg"),
-("img/webshop/musicshirt.png"), ("img/webshop/tshirt.png");
+("img/webshop/araa.png"), ("img/webshop/araa.png"), ("img/webshop/araa.jpg"),
+("img/webshop/araa.png"), ("img/webshop/araa.png");
 
 INSERT INTO `Product` (`description`, `imgLink`, `price`) VALUES
-("Rockband Merchandise Sleeve", "img/webshop/musicshirt.png", 100),
-("Music Book", "img/webshop/musicbook.jpg", 50),
-("Styling Book", "img/webshop/clothesbook.png", 150),
-("CD book", "img/webshop/cd.png", 30),
-("Rockband Merchandise T-shirt", "img/webshop/tshirt.png", 70);
+("Ara1 skor", "img/webshop/araa.png", 100),
+("Ara2 bok", "img/webshop/araa.png", 70),
+("Ara3 dator", "img/webshop/araa.png", 70),
+("Ara1 skor", "img/webshop/araa.png", 70),
+("Ara2 bok", "img/webshop/araa.png", 70);
 
-INSERT INTO `ProductCat` (`prod_id`, `cat_id`) VALUES
+INSERT INTO `Prod2Cat` (`prod_id`, `cat_id`) VALUES
 (1, 1), (1, 2),
 (2, 1), (2, 3),
 (3, 2), (3, 3),
@@ -487,7 +515,7 @@ INSERT INTO `ProductCat` (`prod_id`, `cat_id`) VALUES
 
 
 INSERT INTO `Customer` (`firstName`, `lastName`) VALUES
-("Nicklas", "Envall");
+("Ara", "Ara");
 
 -- ------------------------------------------------------------------------
 --
@@ -503,9 +531,9 @@ StockStatus(INV.amount) AS InStock,
 P.imgLink as image,
 P.price as price
 
-FROM (((ProductCat AS P2C
+FROM (((Prod2Cat AS P2C
 INNER JOIN Product AS P ON P2C.prod_id = P.id)
-INNER JOIN ProductCategory AS PC ON P2C.cat_id = PC.id)
+INNER JOIN ProdCategory AS PC ON P2C.cat_id = PC.id)
 INNER JOIN Inventory AS INV ON INV.prod_id = P.id)
 GROUP BY P.id ORDER BY P.id;
 
@@ -522,13 +550,15 @@ S.description AS location,
 I.amount
 
 FROM Inventory AS I
-INNER JOIN Shelfstorage AS S ON I.shelf_id = S.shelf
+INNER JOIN InvenShelf AS S ON I.shelf_id = S.shelf
 ORDER BY S.shelf;
 
 SELECT * FROM VInventory;
 
 CALL updateInventory(1, "A101", 1000);
-CALL updateInventory(3, "A101", 300);
+CALL updateInventory(3, "A101", 500);
+CALL updateInventory(4, "A101", 332);
+CALL updateInventory(2, "A101", 102);
 
 SELECT * FROM VInventory;
 SELECT * FROM Inventory;
@@ -537,14 +567,14 @@ SELECT * FROM Inventory;
 --
 -- Create view for the shopping cart
 --
-DROP VIEW IF EXISTS VShopcart;
-CREATE VIEW VShopcart AS
+DROP VIEW IF EXISTS VShoppingCart;
+CREATE VIEW VShoppingCart AS
 SELECT
 P.id AS prod_id, C.id AS Customer_ID,
 P.description as Item,
 SUM(P.Price) as Price, COUNT(*) as Amount
 
-FROM Shopcart AS SC
+FROM ShoppingCart AS SC
 INNER JOIN Customer AS C ON SC.customer_id = C.id
 INNER JOIN Product AS P ON P.id = SC.prod_id
 GROUP BY P.id

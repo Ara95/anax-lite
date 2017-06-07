@@ -14,7 +14,6 @@ if (substr($app->request->getRoute(), 0, 5) === "blog/") {
     }
     $blog->showPost($resultset);
     echo "</section>";
-
 } else {
     echo "<h1>Blog</h1>";
     $resultset = $blog->getBlog();

@@ -22,10 +22,10 @@ $resImg = $app->connect->getAllRes("SELECT * FROM Image");
         </select>
 
         <label>Price</label>
-        <input type='number' style="width:75%;" name='price' value=''/>
+        <input type='number' style="width:75%; color:whitesmoke;" name='price' value=''/>
 
 
-        <p class='success' style="background:orange; font-size: 17px; padding:20px;">Choose one, you will be able to edit more later.</p>
+        <p class='success' style="background:#333; font-size: 17px; padding:20px;">Choose category</p>
 
         <?php foreach ($resCat as $k) :?>
 

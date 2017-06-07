@@ -38,10 +38,10 @@ return [
             "text" => "Blog",
             "route" => "blog",
         ],
-        // "Webshop" => [
-        //     "text" => "Webshop",
-        //     "route" => "webshop",
-        // ],
+        "Webshop" => [
+            "text" => "Webshop",
+            "route" => "webshop",
+        ],
         "login" => [
             "text" => "Login",
             "route" => "login",

@@ -8,11 +8,8 @@
 
 <?php
 $admin = $app->admin;
-
 if (isset($_POST['search'])) {
-
     $search = htmlentities($_POST['search']);
-
     $admin->searchUser($search);
 }
 echo "</div></div></div>";

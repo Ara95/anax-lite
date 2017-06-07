@@ -1,15 +1,15 @@
 <div class="main">
 <?php
-
+// Get current page
 $id = getGet("id");
 if (!(is_numeric($id))) {
     die("Not valid for id.");
 }
-
+// Check if form posted and get incoming
 if (hasKeyPost('doDelete')) {
     $app->webshop->deleteInventory($id);
 }
-
+// Check if form posted and get incoming
 if (isset($_POST['doSave'])) {
     // get all product info
     $params = getPost([
@@ -17,7 +17,7 @@ if (isset($_POST['doSave'])) {
         "shelf",
         "Amount"
     ]);
-
+    // send params to webshop class and update
     $app->webshop->updateInventory($params);
     echo "<p class='success'>You updated the details!</p>";
 }
@@ -28,12 +28,12 @@ $resShelf = $app->connect->getAllRes("SELECT * FROM InvenShelf");
     <h1>Edit</h1>
 </section>
 
-
+<!-- Information -->
 <div class="widget" style="height:100%;">
 <table style="width:100%;">
     <tr class="first">
         <th> Shelf </th>
-        <th> Prod_ID </th>
+        <th> Product ID </th>
         <th> Amount </th>
     </tr>
     <tr>

@@ -8,7 +8,7 @@
 <table>
 <tr class="first">
 <th> Edit </th>
-<th> Prod_ID </th>
+<th> Product ID </th>
 <th> In stock </th>
 <th> Description </th>
 <th> Category </th>

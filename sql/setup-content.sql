@@ -1,4 +1,4 @@
-
+USE test;
 SET NAMES utf8;
 
 
@@ -23,4 +23,4 @@ CREATE TABLE `content`
 
 
 
-SELECT `id`, `path`, `slug`, `type`, `title`, `created` FROM `content`;
+SELECT `id`, `slug`, `path`, `title`, `type`, `created` FROM `content`;

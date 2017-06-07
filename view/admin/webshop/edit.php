@@ -1,36 +1,36 @@
 <div class="main">
 <?php
-
+// Get current page
 $id = getGet("id");
 if (!(is_numeric($id))) {
     die("Not valid for id.");
 }
 $resCat = $app->connect->getAllRes("SELECT * FROM ProdCategory");
-
+// Check if form posted and get incoming
 if (hasKeyPost('doDelete')) {
     $app->webshop->deleteProduct($id);
 }
-
+// Check if form posted and get incoming
 if (hasKeyPost('doSave')) {
-
+    // get all categories posts
     $categories = [];
     foreach ($resCat as $k) {
         if (hasKeyPost($k["category"])) {
             array_push($categories, $k["id"]);
         }
     }
-
+    // get all product info
     $params = getPost([
         "id",
         "price",
         "description",
         "img"
     ]);
-
+    // if slug already exists with different id, stop submit
     if (!$categories) {
         echo "<p class='warning'>You need to add a category</p>";
     } else {
-
+        // send params to webshop class and update
         $app->webshop->updateProduct($params, $categories);
         echo "<p class='success'>You updated the details!</p>";
     }
@@ -44,7 +44,7 @@ $resImg = $app->connect->getAllRes("SELECT * FROM Image");
     <h1>Product Information</h1>
 </section>
 
-
+<!-- Information -->
 <div class="widget" style="height:100%;">
     <div class="widget" style="height:100%;">
     <img src="../<?= $res["image"] ?>" alt="notfound" height="100" width="100">
@@ -57,7 +57,7 @@ $resImg = $app->connect->getAllRes("SELECT * FROM Image");
     </div>
 </div>
 
-
+<!-- Form -->
 <div class="widget" style="height:100%;">
 <div class="edit-container">
 <div class="edit-div" style="background:#1e212a;">
